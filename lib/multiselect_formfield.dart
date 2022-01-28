@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:multiselect_formfield/multiselect_dialog.dart';
 
 class MultiSelectFormField extends FormField<dynamic> {
+  final Key? key;
   final Widget title;
   final Widget hintWidget;
   final bool required;
@@ -33,6 +34,7 @@ class MultiSelectFormField extends FormField<dynamic> {
     FormFieldValidator<dynamic>? validator,
     dynamic initialValue,
     AutovalidateMode autovalidate = AutovalidateMode.disabled,
+    this.key,
     this.title = const Text('Title'),
     this.hintWidget = const Text('Tap to select one or more'),
     this.required = false,
@@ -59,6 +61,7 @@ class MultiSelectFormField extends FormField<dynamic> {
     this.checkBoxActiveColor,
     this.checkBoxCheckColor,
   }) : super(
+          key:key,
           onSaved: onSaved,
           validator: validator,
           initialValue: initialValue,
