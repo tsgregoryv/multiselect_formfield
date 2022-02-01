@@ -18,6 +18,7 @@ A multi select form field using alert dialog to select multiple items with check
 - Customizable texts.
 - Follows the app theme and colors.
 - Upgraded to Null Safety.
+- Includes Form Key
 
 
 ### Customization Parameters [MultiFormField]
@@ -58,6 +59,7 @@ A multi select form field using alert dialog to select multiple items with check
 
 ```dart
 MultiSelectFormField(
+                  key: GlobalKey(),
                   autovalidate: false,
                   chipBackGroundColor: Colors.red,
                   chipLabelStyle: TextStyle(fontWeight: FontWeight.bold),
