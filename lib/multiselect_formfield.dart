@@ -28,6 +28,8 @@ class MultiSelectFormField extends FormField<dynamic> {
   final Color? checkBoxCheckColor;
   final Color? checkBoxActiveColor;
   final bool enabled;
+  final bool singleSelect;
+  MainAxisAlignment? dialogAlignment;
 
   MultiSelectFormField({
     FormFieldSetter<dynamic>? onSaved,
@@ -53,6 +55,7 @@ class MultiSelectFormField extends FormField<dynamic> {
     this.trailing,
     this.chipLabelStyle,
     this.enabled = true,
+	  this.singleSelect = false,
     this.chipBackGroundColor,
     this.dialogTextStyle = const TextStyle(),
     this.dialogShapeBorder = const RoundedRectangleBorder(
@@ -60,6 +63,7 @@ class MultiSelectFormField extends FormField<dynamic> {
     ),
     this.checkBoxActiveColor,
     this.checkBoxCheckColor,
+    this.dialogAlignment,
   }) : super(
           key:key,
           onSaved: onSaved,
@@ -85,18 +89,29 @@ class MultiSelectFormField extends FormField<dynamic> {
                 });
               }
 
+              if (selectedOptions.length > 1) {
+                if (singleSelect) {
+                  selectedOptions = [selectedOptions.last];
+                }
+              }
+
               return selectedOptions;
             }
 
             return InkWell(
 
               onTap:  !enabled ? null :() async {
+			  
+				if (open != null) {
+					await open();
+				}
+			  
                 List? initialSelected = state.value;
                 if (initialSelected == null) {
                   initialSelected = [];
                 }
 
-                final items = <MultiSelectDialogItem<dynamic>>[];
+                var items = <MultiSelectDialogItem<dynamic>>[];
                       dataSource!.forEach((item) {
                   items.add(
                       MultiSelectDialogItem(item[valueField], item[textField]));
@@ -105,16 +120,24 @@ class MultiSelectFormField extends FormField<dynamic> {
                 List? selectedValues = await showDialog<List>(
                   context: state.context,
                   builder: (BuildContext context) {
-                    return MultiSelectDialog(
-                      title: title,
-                      okButtonLabel: okButtonLabel,
-                      cancelButtonLabel: cancelButtonLabel,
-                      items: items,
-                      initialSelectedValues: initialSelected,
-                      labelStyle: dialogTextStyle,
-                      dialogShapeBorder: dialogShapeBorder,
-                      checkBoxActiveColor: checkBoxActiveColor,
-                      checkBoxCheckColor: checkBoxCheckColor,
+                    return Column(
+                      mainAxisAlignment: dialogAlignment == null ? MainAxisAlignment.center : dialogAlignment,
+                      children: [
+                        Container(),
+                        Container(),
+                        Container(),
+                        MultiSelectDialog(
+                            title: title,
+                            okButtonLabel: okButtonLabel,
+                            cancelButtonLabel: cancelButtonLabel,
+                            items: items,
+                            initialSelectedValues: initialSelected,
+                            labelStyle: dialogTextStyle,
+                            dialogShapeBorder: dialogShapeBorder,
+                            checkBoxActiveColor: checkBoxActiveColor,
+                            checkBoxCheckColor: checkBoxCheckColor,
+                        ),
+                      ]
                     );
                   },
                 );

@@ -65,17 +65,29 @@ class _MultiSelectDialogState<V> extends State<MultiSelectDialog<V>> {
 
   @override
   Widget build(BuildContext context) {
+
+    ScrollController _controller = ScrollController();
+
     return AlertDialog(
       title: widget.title,
       shape: widget.dialogShapeBorder,
       contentPadding: EdgeInsets.only(top: 12.0),
-      content: SingleChildScrollView(
-        child: ListTileTheme(
-          contentPadding: EdgeInsets.fromLTRB(14.0, 0.0, 24.0, 0.0),
-          child: ListBody(
-            children: widget.items!.map(_buildItem).toList(),
+      scrollable: true,
+      content: SizedBox(
+        height: widget.items!.length > 7 ? MediaQuery.of(context).size.height * 0.75 : null,
+        child: Scrollbar(
+          thumbVisibility: true,
+          controller: _controller,
+          child: SingleChildScrollView(
+            controller: _controller,
+            child: ListTileTheme(
+              contentPadding: EdgeInsets.fromLTRB(14.0, 0.0, 24.0, 0.0),
+              child: Column(
+                children: widget.items!.map(_buildItem).toList(),
+              ),
+            ),
           ),
-        ),
+        )
       ),
       actions: <Widget>[
         TextButton(
