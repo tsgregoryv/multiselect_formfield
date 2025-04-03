@@ -74,18 +74,27 @@ class MultiSelectFormField extends FormField<dynamic> {
             List<Widget> _buildSelectedOptions(state) {
               List<Widget> selectedOptions = [];
 
+              List<String> idArray = [];
+
               if (state.value != null) {
                 state.value.forEach((item) {
                   var existingItem = dataSource!.singleWhere(((itm) => itm[valueField] == item),
                       orElse: () => null);
-                  selectedOptions.add(Chip(
-                    labelStyle: chipLabelStyle,
-                    backgroundColor: chipBackGroundColor,
-                    label: Text(
-                      existingItem[textField],
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ));
+
+                  if (!idArray.contains(existingItem[textField])) {
+                    idArray.add(existingItem[textField]);
+
+                    selectedOptions.add(Chip(
+                      labelStyle: chipLabelStyle,
+                      backgroundColor: chipBackGroundColor,
+                      label: Text(
+                        existingItem[textField],
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ));
+
+                  }
+
                 });
               }
 
