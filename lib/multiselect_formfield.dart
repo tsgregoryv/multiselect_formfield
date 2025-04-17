@@ -81,7 +81,7 @@ class MultiSelectFormField extends FormField<dynamic> {
 
                   selectedOptions.add(Chip(
                       labelStyle: chipLabelStyle,
-                      backgroundColor: chipBackGroundColor,
+                      backgroundColor: existingItem[textField].contains("(\$0.00)") ? Colors.red.shade800 : chipBackGroundColor,
                       label: Text(
                         existingItem[textField],
                         overflow: TextOverflow.ellipsis,
